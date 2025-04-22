@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-go-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-go
+  template:
+    metadata:
+      labels:
+        app: hello-go
+    spec:
+      containers:
+      - name: hello-go
+        image: ralinka0017/hello-go:latest
+        ports:
+        - containerPort: 32777
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-go-service
+spec:
+  type: NodePort
+  selector:
+    app: hello-go
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 32777
+      nodePort: 30007
